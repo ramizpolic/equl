@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 )
 
@@ -46,8 +45,13 @@ var obj = Object{
 }
 
 func main() {
-	v, _ := json.Marshal(obj)
-	var data map[string]interface{}
-	_ = json.Unmarshal(v, &data)
-	fmt.Println(unwrapMap("", data, []string{"A", "C.D", "C.M.K.*"}))
+	fields := []string{"B", "B.0", "C.D", "C.M.K.*"}
+	fmt.Println()
+	fmt.Println("=== Object", obj)
+	fmt.Println()
+	fmt.Println("--- Without", fields)
+	fmt.Println(UnwrapWithout(obj, fields...))
+	fmt.Println()
+	fmt.Println("--- With", fields)
+	fmt.Println(UnwrapWith(obj, fields...))
 }
