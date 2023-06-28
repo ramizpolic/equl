@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"regexp"
+	"strings"
 )
 
 // CompressedMap defines a map with keys such as: key.a.b, or key.[0]b.c
@@ -12,16 +13,23 @@ type extracted struct {
 	fresh map[string]interface{}
 }
 
-func unwrapMap(data map[string]interface{}) map[string]interface{} {
+func unwrapMap(parent string, data map[string]interface{}, req []string) map[string]interface{} {
 	result := make(map[string]interface{})
 	for k, v := range data {
+		newK := fmt.Sprintf("%s.%s", parent, k)
+		if parent == "" {
+			newK = k
+		}
+		// TODO: what about the array of maps/serializable objects?
 		switch v.(type) {
 		case map[string]interface{}:
-			for ck, cv := range unwrapMap(v.(map[string]interface{})) {
-				result[fmt.Sprintf("%s.%s", k, ck)] = cv
+			for ck, cv := range unwrapMap(newK, v.(map[string]interface{}), req) {
+				result[ck] = cv
 			}
 		default:
-			result[k] = v
+			if matches(newK, req) {
+				result[newK] = v
+			}
 		}
 	}
 	return result
@@ -38,7 +46,12 @@ func newExtractedWith(orig map[string]interface{}, req []string) *extracted {
 
 func matches(key string, reqs []string) bool {
 	for _, req := range reqs {
-		if yes, _ := regexp.Match(req, []byte(key)); yes {
+		// fmt.Printf("Comparing %s with %s\n", key, req)
+		if strings.Contains(req, "*") {
+			if yes, _ := regexp.Match(req, []byte(key)); yes {
+				return true
+			}
+		} else if strings.EqualFold(req, key) {
 			return true
 		}
 	}
