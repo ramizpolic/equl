@@ -38,7 +38,7 @@ func UnwrapWithout(obj interface{}, fieldSkip ...string) (map[string]interface{}
 func UnwrapMapWithout(data map[string]interface{}, fieldSkip ...string) map[string]interface{} {
 	skipMap := listToMap(fieldSkip) // memoize skip request data
 	return flatten(data, func(key string) bool {
-		return len(skipMap) > 0 && !matches(key, skipMap)
+		return len(skipMap) > 0 && !matches(key, skipMap) || len(skipMap) == 0
 	})
 }
 
@@ -57,7 +57,7 @@ func UnwrapWith(obj interface{}, fieldReq ...string) (map[string]interface{}, er
 func UnwrapMapWith(data map[string]interface{}, fieldReq ...string) map[string]interface{} {
 	needMap := listToMap(fieldReq) // memoize need request data
 	return flatten(data, func(key string) bool {
-		return len(needMap) > 0 && matches(key, needMap)
+		return len(needMap) > 0 && matches(key, needMap) || len(needMap) == 0
 	})
 }
 
@@ -100,6 +100,8 @@ func flatten(input map[string]interface{}, filterFn func(key string) bool) map[s
 		// handle primitives
 		default:
 			if filterFn(item.key) {
+				// TODO: if the object has not been unmarshalled properly,
+				//  this will not work properly (e.g. objects)
 				resultMap[item.key] = itemValue
 			}
 		}
