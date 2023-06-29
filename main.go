@@ -45,7 +45,7 @@ var obj = Object{
 }
 
 func main() {
-	fields := []string{"B", "B.0", "C.D", "C.M.K.*"}
+	fields := []string{"B[0]", "C.D", "C.M.K.*"}
 	fmt.Println()
 	fmt.Println("=== Object", obj)
 	fmt.Println()
