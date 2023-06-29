@@ -1,3 +1,3 @@
-module github.com/ramizpolic/map-differ
+module github.com/ramizpolic/equl
 
 go 1.20
