@@ -65,6 +65,7 @@ func main() {
 
 ### TODO
 - [ ] Expose better interface for equality check (which also includes custom filtration function)
+- [ ] Add support for specifying `WithFields` and `WithoutFields` for sub-field filtering
 - [ ] Improve performances and add benchmarking stats
 - [ ] Write more complete test scenarios
 - [ ] Update docs
