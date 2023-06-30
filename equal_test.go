@@ -1,7 +1,8 @@
-package main
+package equl
 
 import (
 	"fmt"
+	"testing"
 )
 
 type Object struct {
@@ -44,7 +45,7 @@ var obj = Object{
 	},
 }
 
-func main() {
+func TestEqual(t *testing.T) {
 	fields := []string{"B.0", "C.D", "C.M.K"}
 	fmt.Println()
 	fmt.Println("=== Fields", fields)

@@ -1,13 +1,20 @@
-# map-differ
-Dynamic rule-based map comparison
+# equl
+equl is a dynamic and performant rule-based object equality comparator best suited for checks of mutating objects often
+found in Kubernetes environments.
 
-### PoC: Selective object comparator
+Work in progress...
+
+## Usage
+```go
+
+
+```
+
+### Algorithm: Selective object comparator
 For non-transformative and selective approach to comparison, maps that contain fields with non-zero default values,
 or for granular comparison.
 Think: _selective, exact, close, or not really_.
 Example: Structure that contains a lot of fields, but we are interested in specific ones to avoid dynamic injection checks.
-
-Refer to `pkg/utils/map.go` for PoC rundown.
 
 Extends https://github.com/cisco-open/k8s-objectmatcher
 
