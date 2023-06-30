@@ -2,7 +2,7 @@
 equl is a dynamic and performant rule-based object equality comparator best suited for checks of mutating objects often
 found in Kubernetes environments.
 
-Work in progress...
+NOTE: Work in progress
 
 ## Usage
 ```go
@@ -10,7 +10,13 @@ Work in progress...
 
 ```
 
-### Algorithm: Selective object comparator
+### TODO
+- [ ] Expose better interface for equality check (which also includes custom filtration function)
+- [ ] Improve performances and add benchmarking stats
+- [ ] Write more complete test scenarios
+- [ ] Update docs
+
+### Algorithm -- Selective object comparator
 For non-transformative and selective approach to comparison, maps that contain fields with non-zero default values,
 or for granular comparison.
 Think: _selective, exact, close, or not really_.
