@@ -17,13 +17,13 @@ func SkipDefaults() func(*option) {
 	}
 }
 
-func OnlyFields(fields []string) func(*option) {
+func OnlyFields(fields ...string) func(*option) {
 	return func(o *option) {
 		o.onlyFields = fields
 	}
 }
 
-func WithoutFields(fields []string) func(*option) {
+func WithoutFields(fields ...string) func(*option) {
 	return func(o *option) {
 		o.dropFields = fields
 	}
@@ -46,7 +46,7 @@ func Equal(a, b interface{}, opts ...func(*option)) (bool, error) {
 		unwrapper, fields = UnwrapWithout, options.dropFields
 	}
 
-	// Fetch object maps
+	// Fetch object maps, TODO: this  can be optimized
 	aMap, errA := unwrapper(a, fields...)
 	if errA != nil {
 		return false, errA
@@ -56,7 +56,7 @@ func Equal(a, b interface{}, opts ...func(*option)) (bool, error) {
 		return false, errB
 	}
 
-	// Get all keys from maps
+	// Get all keys from maps, this is fairly quick
 	keys := make(map[string]bool)
 	for k := range aMap {
 		keys[k] = true
@@ -65,7 +65,7 @@ func Equal(a, b interface{}, opts ...func(*option)) (bool, error) {
 		keys[k] = true
 	}
 
-	// Do comparison
+	// Do comparison, TODO: this can be optimized
 	for key := range keys {
 		aVal, aOk := aMap[key]
 		bVal, bOk := bMap[key]

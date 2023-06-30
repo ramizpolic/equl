@@ -6,8 +6,36 @@ NOTE: Work in progress
 
 ## Usage
 ```go
+import (
+	"fmt"
+	"github.com/ramizpolic/equl"
+)
 
+type Object struct {
+	Field  int
+	Parent struct {
+		Child string
+	}
+}
 
+func main() {
+	A := Object{
+		Value: 1,
+		Parent: struct {
+			Child string
+		}{"child"},
+	}
+	B := Object{
+		Value: 2,
+		Parent: struct {
+			Child string
+		}{"child"},
+	}
+
+	fmt.Println(equl.Equal(A, B))                              // false
+	fmt.Println(equl.Equal(A, B, equl.WithoutFields("Value"))) // true
+	fmt.Println(equl.Equal(A, B, equl.OnlyFields("Parent")))   // true
+}
 ```
 
 ### TODO
