@@ -5,36 +5,61 @@ found in Kubernetes environments.
 NOTE: Work in progress
 
 ## Usage
-```go
+```golang
+
 import (
 	"fmt"
 	"github.com/ramizpolic/equl"
 )
 
 type Object struct {
-	Field  int
+	Value  int
 	Parent struct {
 		Child string
+	}
+	First struct {
+		Main   int
+		Second struct {
+			Third string
+		}
 	}
 }
 
 func main() {
 	A := Object{
-		Value: 1,
-		Parent: struct {
-			Child string
-		}{"child"},
+		Value:  1,
+		Parent: struct{ Child string }{"child"},
+		First: struct {
+			Main   int
+			Second struct{ Third string }
+		}{
+			Main:   1,
+			Second: struct{ Third string }{"child-child"},
+		},
 	}
 	B := Object{
-		Value: 2,
-		Parent: struct {
-			Child string
-		}{"child"},
+		Value:  2,
+		Parent: struct{ Child string }{"child"},
+		First: struct {
+			Main   int
+			Second struct{ Third string }
+		}{
+			Main:   2,
+			Second: struct{ Third string }{"child-child"},
+		},
 	}
 
-	fmt.Println(equl.Equal(A, B))                              // false
-	fmt.Println(equl.Equal(A, B, equl.WithoutFields("Value"))) // true
-	fmt.Println(equl.Equal(A, B, equl.OnlyFields("Parent")))   // true
+	// Specific fields
+	fmt.Println(equl.Equal(A, B))                                   // false
+	fmt.Println(equl.Equal(A, B, equl.WithoutFields("Value")))      // false
+	fmt.Println(equl.Equal(A, B, equl.OnlyFields("Parent")))        // true 
+	fmt.Println(equl.Equal(A, B, equl.OnlyFields("Parent.Child")))  // true
+
+	// Dynamic sub-fields
+	fmt.Println(equl.Equal(A, B, equl.OnlyFields("First.Second.Third"}))) // true
+	fmt.Println(equl.Equal(A, B, equl.OnlyFields("First.Second")))        // true
+	fmt.Println(equl.Equal(A, B, equl.OnlyFields("First.Main")))          // false
+	fmt.Println(equl.Equal(A, B, equl.OnlyFields("First")))               // false
 }
 ```
 
