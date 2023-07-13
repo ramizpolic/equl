@@ -12,7 +12,7 @@ type options struct {
 // then that key will be taken into account when performing these operations.
 //
 // If WithFieldFilter is specified, WithFields and WithoutFields is ignored.
-func WithFieldFilter(filter func(string) bool) func(*options) {
+func WithFieldFilter(filter func(key string) bool) func(*options) {
 	return func(o *options) {
 		o.filter = filter
 	}

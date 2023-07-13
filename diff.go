@@ -19,7 +19,10 @@ func (r *Result) Diffs() map[string][2]interface{} {
 	return r.diffs
 }
 
-// Diff dynamically compares two objects and returns their difference
+// Diff dynamically compares two objects and returns their difference. Diff is
+// slower thatn Equal as it calculate the whole difference map between objects.
+// Use Diff when you need to find out which fields are different.
+// Objects must implement json.Marshaler interface.
 func Diff(a, b interface{}, opts ...func(*options)) (*Result, error) {
 	// Load options
 	req := &options{}
@@ -83,7 +86,10 @@ func Diff(a, b interface{}, opts ...func(*options)) (*Result, error) {
 	}, nil
 }
 
-// Equal dynamically compares if two objects are equal
+// Equal dynamically compares if two objects are equal. This is faster that Diff
+// since it does not need to calculate difference map. Use Equal when you need to
+// find out if two objects are equal or not, without knowing the differences.
+// Objects must implement json.Marshaler interface.
 func Equal(a, b interface{}, opts ...func(*options)) (bool, error) {
 	result, err := Diff(a, b, append(opts, withOnlyEqual())...)
 	if err != nil {
