@@ -55,6 +55,6 @@ func TestMainAbc(t *testing.T) {
 
 	// Equal dynamically compares if two objects are equal. This is faster that Diff
 	// since it does not need to calculate difference map. Same rules apply.
-	equal, _ := equl.Equal(objA, objB)                                      // False
-	equal, _ := equl.Equal(objA, objB, equl.WithoutFields(".Parent.Child")) // True
+	_, _ = equl.Equal(objA, objB)                                      // False
+	_, _ = equl.Equal(objA, objB, equl.WithoutFields(".Parent.Child")) // True
 }
