@@ -4,10 +4,11 @@ found in Kubernetes environments.
 
 ## Usage
 ```go
+package main
+
 import (
 	"github.com/ramizpolic/equl"
 	"strings"
-	"testing"
 )
 
 type Parent struct {
@@ -20,7 +21,7 @@ type Object struct {
 	Parent Parent
 }
 
-func TestMainAbc(t *testing.T) {
+func main() {
 	objA := Object{
 		Base:   1,
 		Parent: Parent{Name: "same", Child: "diff-A"},
